@@ -17,8 +17,5 @@ dependencies = [
     "python-multipart>=0.0.6,<1.0"
 ]
 
-[project.scripts]
-start = "uvicorn backend.main:app --reload"
-
 [tool.vercel]
 entrypoint = "backend.main:app"
