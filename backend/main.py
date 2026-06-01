@@ -75,7 +75,7 @@ async def compress_image_api(
 
         # SAFE resize (not too aggressive)
         if image.width > 1200 or image.height > 1200:
-            image = image.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
+            image.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
 
         img_array = np.array(image)
 
@@ -114,6 +114,15 @@ async def compress_image_api(
     
     except Exception as e:
         return {"error": str(e)}
+
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Image compression API is running.",
+        "endpoint": "POST /",
+        "info": "Send an image file with form fields to compress it. Use /health for status checks."
+    }
 
 
 @app.get("/health")
