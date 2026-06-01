@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "image_size_reduce"
+version = "0.1.0"
+description = "Image size reduction API using FastAPI, K-means compression, and quality-based output optimization."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100,<0.200",
+    "uvicorn>=0.22,<0.27",
+    "numpy>=1.24,<2.0",
+    "scikit-learn>=1.3,<2.0",
+    "pillow>=10.0,<11.0",
+    "python-multipart>=0.0.6,<1.0"
+]
+
+[project.scripts]
+start = "uvicorn backend.main:app --reload"
