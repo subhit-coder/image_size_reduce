@@ -1,90 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subh Image Compressor</title>
 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Subh <span>Image</span> Compressor</h1>
+        <h1>Subh <span>Image</span> Compressor</h1>
 
-    <!-- UPLOAD -->
-    <div class="upload-box" id="uploadBox">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin: 0 auto; display: block; margin-bottom: 15px;">
-            <path d="M8 40h32M24 4v20M14 20l10-10 10 10" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <p style="margin: 10px 0; color: #6366f1; font-weight: 600;">📁 Click to upload or drag image here</p>
-        <p style="margin: 0; color: #9ca3af; font-size: 14px;">Supported: JPG, PNG, GIF, WebP (Max 10MB)</p>
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <!-- Upload Box -->
+        <div class="upload-box" id="uploadBox">
+
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <path d="M8 40h32M24 4v20M14 20l10-10 10 10"
+                    stroke="#6366f1"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+
+            <p>
+                📁 Click to Upload or Drag & Drop Image
+            </p>
+
+            <small>
+                JPG, PNG, WEBP Supported (Max 10MB)
+            </small>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                style="display:none;">
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+
+            <label>Color Palette (K-Means)</label>
+
+            <div class="slider-box">
+                <input
+                    type="range"
+                    min="2"
+                    max="64"
+                    value="16"
+                    id="kSlider">
+
+                <span id="kValue">16</span>
+            </div>
+
+            <label>Output Format</label>
+
+            <select id="format">
+                <option value="JPEG">JPEG</option>
+                <option value="PNG">PNG</option>
+                <option value="WEBP">WEBP</option>
+            </select>
+
+            <label>Target Size</label>
+
+            <select id="targetKB">
+                <option value="50">1 - 50 KB</option>
+                <option value="100">50 - 100 KB</option>
+                <option value="200">100 - 200 KB</option>
+                <option value="500">200 - 500 KB</option>
+                <option value="1000">500 KB - 1 MB</option>
+            </select>
+
+            <button id="compressBtn">
+                🚀 Compress Image
+            </button>
+
+        </div>
+
+        <!-- Size Information -->
+        <div
+            class="size-info"
+            id="sizeInfo"
+            style="display:none;">
+
+            <div class="size-box">
+                <h3>📁 Original Size</h3>
+                <p id="originalSize">0 KB</p>
+            </div>
+
+            <div class="size-box">
+                <h3>📦 Compressed Size</h3>
+                <p id="compressedSize">0 KB</p>
+            </div>
+
+            <div class="size-box">
+                <h3>🚀 Compression Ratio</h3>
+                <p id="compressionRatio">0%</p>
+            </div>
+
+        </div>
+
+        <!-- Image Comparison -->
+        <div
+            class="preview-comparison"
+            id="previewComparison"
+            style="display:none;">
+
+            <div class="preview-item">
+
+                <h3>Original Image</h3>
+
+                <canvas
+                    id="originalCanvas"
+                    class="comparison-canvas">
+                </canvas>
+
+            </div>
+
+            <div class="preview-item">
+
+                <h3>Compressed Image</h3>
+
+                <canvas
+                    id="compressedCanvas"
+                    class="comparison-canvas">
+                </canvas>
+
+            </div>
+
+        </div>
+
+        <!-- Single Preview Before Compression -->
+        <div
+            class="preview"
+            id="singlePreview">
+
+            <canvas
+                id="previewCanvas"
+                class="preview-canvas">
+            </canvas>
+
+        </div>
+
+        <!-- Download -->
+        <a
+            id="downloadBtn"
+            style="display:none;"
+            download>
+
+            ⬇️ Download Compressed Image
+
+        </a>
+
     </div>
 
-    <!-- SIZE INFO -->
-    <div class="size-info" id="sizeInfo" style="display: none;">
-        <div class="size-box">
-            <div class="size-label">📊 Original Size</div>
-            <div class="size-value" id="originalSize">0 KB</div>
-        </div>
-        <div class="size-arrow">→</div>
-        <div class="size-box">
-            <div class="size-label">🗜️ Compressed Size</div>
-            <div class="size-value" id="compressedSize">0 KB</div>
-        </div>
-        <div class="size-box">
-            <div class="size-label">📈 Saved</div>
-            <div class="size-value" id="compressionRatio">0%</div>
-        </div>
-    </div>
+    <script src="script.js"></script>
 
-    <!-- PREVIEW COMPARISON -->
-    <div class="preview-comparison" id="previewComparison" style="display: none;">
-        <div class="preview-item">
-            <h4>📸 Original Image</h4>
-            <canvas id="originalCanvas" class="comparison-canvas"></canvas>
-        </div>
-        <div class="preview-item">
-            <h4>🖼️ Compressed Image</h4>
-            <canvas id="canvas" class="comparison-canvas"></canvas>
-        </div>
-    </div>
-
-    <!-- SINGLE PREVIEW (Before Upload) -->
-    <div class="preview" id="singlePreview">
-        <canvas id="canvas" class="preview-canvas"></canvas>
-    </div>
-
-    <!-- CONTROLS -->
-    <div class="controls">
-
-        <label for="kSlider">Color Palette (K-Means Clusters)</label>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <input type="range" min="2" max="64" value="16" id="kSlider">
-            <span id="kValue">16</span>
-        </div>
-
-        <label for="format">Output Format</label>
-        <select id="format">
-            <option value="image/jpeg">JPEG (Best for Photos)</option>
-            <option value="image/png" selected>PNG (Best Quality)</option>
-            <option value="image/webp">WEBP (Modern Format)</option>
-        </select>
-
-        <label for="targetKB">Target File Size (KB)</label>
-        <input type="number" id="targetKB" min="10" max="1000" value="100" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 16px;">
-
-        <button id="compressBtn">🚀 Compress Image</button>
-        <button id="downloadBtn">⬇️ Download Compressed Image</button>
-
-    </div>
-
-</div>
-
-<script src="script.js"></script>
 </body>
+
 </html>
