@@ -52,7 +52,7 @@ def compress_to_target(image, format, target_kb):
 
 
 # ---------- API ----------
-@app.post("/compress")
+@app.post("/")
 async def compress_image_api(
     file: UploadFile = File(...),
     k: int = Form(16),
